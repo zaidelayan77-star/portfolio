@@ -1,0 +1,459 @@
+/* Start Global Rules */
+
+* {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+/* Start Variables */
+
+:root {
+    --main-color: #2E8CCF;
+    --back-color: #F9F9FF;
+    --main-transition: 0.5s;
+    --sec-color: #EEEEEE;
+    --padding-top: 50px;
+    --padding-bottom: 50px;
+}
+
+/* End Variables */
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--back-color);
+}
+
+/* Start Contanier */
+
+.contanier {
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (min-width: 768px) {
+    .contanier {
+        width: 750px;
+    }
+}
+
+@media (min-width: 992px) {
+    .contanier {
+        width: 970px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .contanier {
+        width: 1170px;
+    }
+}
+
+/* End Contanier */
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    width: 50px;
+    height: 50px;
+}
+
+
+.main-title{
+    margin: 0 auto;
+    display: flex;
+    width: fit-content;
+    flex-direction: column;
+    position: relative;
+}
+
+.main-title .big{
+    position: relative;
+    font-size: 80px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #2e8ccf1a;
+}
+
+.main-title .small{
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    font-size: 40px;
+    color: var(--main-color);
+    text-transform: uppercase;
+    font-weight: bold;
+    transform: translateX(-50%);
+}
+
+/* Start Mage Menu */
+
+.menu-icon {
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+    /* position: fixed; */
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+}
+
+
+.close-icon {
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+}
+
+.close-icon {
+    display: none;
+}
+
+.menu-items {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1;
+}
+
+.menu-items ul {
+    list-style: none;
+    padding: 0;
+    margin: 20% 0 0 0;
+    text-align: center;
+}
+
+.menu-items ul li {
+    margin-bottom: 20px;
+}
+
+.menu-items ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 24px;
+    transition: color 0.3s ease-in-out;
+}
+
+.menu-items ul li a:hover {
+    color: #00bcd4;
+}
+
+.close-icon {
+    color: white;
+}
+
+/* End Mage Menu */
+
+.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    position: fixed;
+    z-index: 40;
+    width: 100%;
+    height: 100%;
+    background-color: var(--main-blue-color);
+    animation: hide 400ms ease 2500ms forwards;
+}
+
+.loader img:nth-child(2) {
+    width: 280px;
+    margin-left: 25px;
+    transform: translateY(-20px);
+}
+
+@keyframes hide {
+    100% {
+        top: 100%;
+    }
+}
+
+.loaderLogo {
+    opacity: 0;
+    animation: loader 1.5s linear 0s infinite forwards;
+}
+
+.loaderLogo img {
+    width: 280px;
+    height: 280px;
+}
+
+@keyframes loader {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+
+.goTop {
+    display: none;
+    position: fixed;
+    bottom: 5%;
+    right: 10px;
+    z-index: 5;
+}
+
+@media (max-width: 768px){
+    .goTop{
+        right: 15px;
+    }
+}
+
+.goTop span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background-color: #2b313b;
+    box-shadow: 0px 0px 10px var(--main-blue-color);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.goTop span:hover {
+    background-color: #1F2A3E;
+}
+
+.goTop span:hover i {
+    color: #fff;
+}
+
+.goTop span i {
+    color: #fff;
+    font-size: 1.5em;
+}
+
+
+.btn a{
+    text-transform: none !important;
+    padding: 0 42px !important;
+    line-height: 50px !important;
+    background-image: linear-gradient(to right, #8490ff, #62bdfc 48%, #8490ff);
+    background-size: 200% auto;
+    color: #fff !important;
+    display: inline-block;
+    border-radius: 5px;
+    font-size: 13px !important;
+    font-weight: 500;
+    transition: all .3s linear 0s !important;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn a:hover{
+    background-position: right center;
+}
+
+/* End Global Rules */
+
+/* Start Hader */
+
+.header{
+    background-color: white;
+    box-shadow: 0px 0px 3px black;
+    position: relative;
+}
+
+.header .contanier{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+
+.header .contanier .logo{
+    width: 200px;
+}
+
+.header .contanier .logo img{
+    width: 200px;
+}
+
+.header .contanier .nav ul{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.header .contanier .nav ul li{
+    position: relative;
+}
+
+.header .contanier .nav ul li::before{
+    content: "";
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    transition: var(--main-transition);
+    background-color: var(--main-color);
+}
+
+.header .contanier .nav ul li.active::before{
+    content: "";
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    transition: var(--main-transition);
+    background-color: var(--main-color);
+}
+
+.header .contanier .nav ul li:hover::before{
+    width: 100%;
+}
+
+.header .contanier .nav ul li a{
+    text-transform: uppercase;
+    color: black;
+    font-weight: bold;
+    transition: var(--main-transition);
+}
+
+.header .contanier .nav ul li a.active{
+    color: var(--main-color);
+}
+
+/* End Header */
+
+/* Start Landing Page */
+
+.landing{
+    height: 87vh;
+}
+
+.landing .contanier{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.landing .contanier .image{
+    margin-left: 100px;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+}
+
+.landing .contanier .image img{
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+}
+
+.landing .contanier .text{
+    margin-right: 100px;
+}
+
+.landing .contanier .text .name{
+    font-size: 50px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--main-color);
+    margin-bottom: 20px;
+}
+
+.landing .contanier .text .major{
+    margin-bottom: 20px;
+}
+
+
+/* End Landing Page */
+
+/* Start Bar */
+
+.bar{
+    height: 5px;
+    background-color: var(--main-color);
+    width: 100%;
+}
+
+/* End Bar */
+
+
+/* Start About */
+
+.about{
+    padding-top: var(--padding-top);
+    padding-bottom: var(--padding-bottom);
+}
+
+.about .contanier{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 60px;
+}
+
+.about .contanier .sk{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+}
+
+.about .contanier .sk .box{
+    width: 150px;
+    height: 150px;
+    box-shadow: 0px 0px 5px black;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.about .contanier .sk .box span{
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.about .contanier .text{
+    width: 750px;
+}
+
+.about .contanier .text p{
+    font-size: 19px;
+}
+
+/* End About */
