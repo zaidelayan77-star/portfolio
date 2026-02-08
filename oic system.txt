@@ -1,0 +1,230 @@
+import React, { useEffect, useState } from "react";
+import dropLevel1 from "../../assets/drople-2/1 (4).svg";
+import dropLevel2 from "../../assets/drople-2/1 (5).svg";
+import dropLevel3 from "../../assets/drople-2/1 (1).svg";
+import dropLevel4 from "../../assets/drople-2/1 (3).svg";
+import dropLevel5 from "../../assets/drople-2/1 (2).svg";
+
+// Valid placeholder imports - User will update paths
+import logo1 from "../../assets/1 (1).svg";
+import logo2 from "../../assets/1 (2).svg";
+import logo3 from "../../assets/1 (3).svg";
+import logo4 from "../../assets/1 (4).svg";
+
+import { apiClient } from "../../services/api/api";
+import UseScrollAnimation from "../../hooks/UseScrollAnimation";
+
+
+export default function AboutOICSystem({
+    lang = "en",
+    topSpacing = 16,
+    title,
+    alt = "OIC System Level",
+}) {
+    const isRTL = lang === "ar" || lang === "fa";
+    const [charts, setCharts] = useState([]);
+    const [hoveredIndex, setHoveredIndex] = useState(null);
+    UseScrollAnimation();
+
+    const logos = [logo4, logo1, logo2, logo2 , logo3];
+
+    useEffect(() => {
+        let cancel = false;
+        (async () => {
+            try {
+                const res = await apiClient.oicSystemCharts.getAll();
+                const data = res?.data?.data?.data || [];
+                if (!cancel) setCharts(data.slice(0, 5));
+            } catch (err) {
+                console.error("Failed to fetch OIC system charts:", err);
+            }
+        })();
+        return () => { cancel = true; };
+    }, []);
+
+    const T = {
+        en: { title: "INWRDAM within the OIC System" },
+        ar: { title: "إنوردام ضمن منظومة التعاون الإسلامي" },
+    };
+    const heading = title || (T[lang]?.title || T.en.title);
+    const helperText =
+        lang === "ar"
+            ? "حرّك المؤشر فوق كل مستوى لاستكشاف دور الجهة داخل منظومة منظمة التعاون الإسلامي."
+            : "Hover over each level to explore the entity’s role within the OIC system.";
+
+    const dropImages = [dropLevel1, dropLevel2, dropLevel3, dropLevel4, dropLevel5];
+
+    const getFullName = (item) => item?.full_name || item?.name || item?.title || "";
+    const getDescription = (item) => item?.description || item?.summary || "";
+    const getLink = (item) => item?.link || null;
+
+    const displayIndex = hoveredIndex !== null ? hoveredIndex : 0;
+    const activeItem = charts[displayIndex] || (charts.length > 0 ? charts[0] : null);
+
+    const getFirstLetter = (index) => {
+        const item = charts[index];
+        if (!item) return "";
+        const name = getFullName(item);
+        return name ? name.trim().charAt(0) : "";
+    };
+
+    return (
+        <section
+            className={`oic-drop-wrap py-12 animate-sectionFadeIn ${isRTL ? "rtl" : ""}`}
+            style={{ marginTop: `${topSpacing}px` }}
+        >
+            <div className="container mx-auto px-4">
+                <h2 className="oic-drop-title">{heading}</h2>
+                <p className="oic-drop-subtitle">{helperText}</p>
+
+                <div className="flex flex-col lg:flex-row items-center lg:items-center justify-center gap-12 lg:gap-20">
+                    <div className="w-full lg:w-[40%] flex flex-col items-center justify-center relative min-h-[320px] md:min-h-[480px]">
+                        {[dropLevel1, dropLevel2, dropLevel3, dropLevel4, dropLevel5].map((img, idx) => {
+                            const isActive = hoveredIndex === idx;
+                            const isAnyHovered = hoveredIndex !== null;
+
+                            // Responsive bottom offsets
+                            const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+                            const bottomOffsets = isMobile
+                                ? ["-40px", "-35px", "-30px", "-20px", "0px"]
+                                : ["-75px", "-68px", "-57px", "-36px", "-6px"];
+
+                            return (
+                                <div
+                                    key={idx}
+                                    className={`relative z-[${50 - idx * 10}] cursor-pointer group transition-all duration-500 hover:scale-105 js-scroll fade-btm`}
+                                    style={{
+                                        width: idx === 0 ? "30%" : idx === 1 ? "42%" : idx === 2 ? "54%" : "56%",
+                                        bottom: bottomOffsets[idx],
+                                        filter: isAnyHovered && !isActive ? "grayscale(1) opacity(0.4)" : "none"
+                                    }}
+                                    onMouseEnter={() => setHoveredIndex(idx)}
+                                    onMouseLeave={() => setHoveredIndex(null)}
+                                >
+                                    <img
+                                        className={`w-full transition-all duration-500 ${isActive ? "drop-shadow-[0_0_20px_rgba(13,71,161,0.6)] scale-105" : "drop-shadow-[0_5px_15px_rgba(0,0,0,0.1)]"}`}
+                                        src={img}
+                                        alt={`${alt} - Level ${idx + 1}`}
+                                    />
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    <div className="w-full lg:w-[50%] flex flex-col gap-3 py-6 md:py-10">
+                        {charts.length > 0 ? (
+                            charts.map((item, index) => {
+                                const isActive = hoveredIndex === index;
+                                const isAnyHovered = hoveredIndex !== null;
+                                const bluePalette = ["#0d47a1", "#1565c0", "#1976d2", "#1e88e5", "#2196f3"];
+                                const accentColor = bluePalette[index % bluePalette.length];
+
+                                return (
+                                    <div
+                                        key={item?.id || index}
+                                        onMouseEnter={() => setHoveredIndex(index)}
+                                        onMouseLeave={() => setHoveredIndex(null)}
+                                        className={`p-4 rounded-xl bg-white border cursor-pointer transition-all duration-500 
+                                            ${isActive
+                                                ? "border-blue-400 shadow-lg translate-x-2 opacity-100 scale-[1.02]"
+                                                : isAnyHovered ? "opacity-30 grayscale blur-[0.5px] scale-95" : "opacity-60"}`}
+                                        style={{
+                                            borderInlineStart: `3px solid ${accentColor}`,
+                                            maxWidth: '90%'
+                                        }}
+                                    >
+                                        <div className="mb-2 flex items-center gap-3">
+                                            <div
+                                                className="w-8 h-8 rounded-full flex items-center justify-center bg-white shadow-sm shrink-0 overflow-hidden border border-gray-100"
+                                            >
+                                                <img
+                                                    src={logos[index % logos.length]}
+                                                    alt="Logo"
+                                                    className="w-full h-full object-contain p-1"
+                                                />
+                                            </div>
+                                            <h3
+                                                className="text-sm md:text-base font-bold leading-tight"
+                                                style={{ color: isActive ? accentColor : "#2660b1" }}
+                                            >
+                                                {getFullName(item)}
+                                            </h3>
+                                        </div>
+
+                                        {getDescription(item) && (
+                                            <div className={`text-xs md:text-sm leading-relaxed space-y-1 transition-colors duration-500 ${isActive ? "text-[#0d47a1]" : "text-gray-400"}`}>
+                                                {getDescription(item).split("\n").map((line, i) => (
+                                                    <p key={i}>{line.trim()}</p>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })
+                        ) : (
+                            <div className="flex flex-col items-center gap-4 text-gray-400">
+                                <div className="animate-pulse w-full h-48 bg-gray-50 rounded-3xl"></div>
+                                <p className="text-sm">{isRTL ? "جاري التحميل..." : "Loading..."}</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+
+            <style dangerouslySetInnerHTML={{
+                __html: `
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(15px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes sectionFadeIn {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.4s ease-out forwards;
+        }
+        .animate-sectionFadeIn {
+          animation: sectionFadeIn 0.8s ease-out forwards;
+        }
+        .oic-drop-wrap.rtl {
+          direction: rtl;
+        }
+        @media (max-width: 1024px) {
+          .oic-drop-wrap .flex-col.lg\\:flex-row {
+            gap: 2rem;
+          }
+          .oic-drop-wrap .w-full.lg\\:w-\\[40\\%\\] {
+            min-height: 380px !important;
+          }
+          .oic-drop-wrap .w-full.lg\\:w-\\[50\\%\\] {
+            padding-top: 2rem;
+            width: 100% !important;
+          }
+          .oic-drop-wrap .w-full.lg\\:w-\\[50\\%\\] > div {
+             max-width: 100% !important;
+          }
+        }
+        @media (max-width: 640px) {
+          .oic-drop-wrap .w-full.lg\\:w-\\[40\\%\\] {
+            min-height: 320px !important;
+            transform: scale(0.9);
+          }
+          .oic-drop-wrap .oic-drop-title {
+            font-size: 24px;
+            text-align: center;
+          }
+          .oic-drop-wrap .oic-drop-subtitle {
+            text-align: center;
+            font-size: 14px;
+          }
+        }
+        /* RTL specific border fix */
+        .rtl .oic-drop-wrap .p-4.rounded-xl {
+          border-inline-start-width: 3px !important;
+          border-left-width: 1px; /* reset default left border */
+        }
+      `}} />
+        </section>
+    );
+}
